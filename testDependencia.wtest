@@ -1,0 +1,39 @@
+import rodados.*
+
+describe "test etapa 1 con 2 dependencias" {
+    const deportes = new Dependencia(empleados=45)
+    const cultura = new Dependencia(empleados=31)
+    var cachito = new Corsa(color="rojo")
+    const pedido1 = new Pedido(distancia=960,tiempoMaximo=8,cantidadPasajeros=4)
+
+    method initialize(){
+        deportes.agregarAFlota(cachito)
+        deportes.agregarAFlota(new Corsa(color="azul"))
+        deportes.agregarAFlota(new Corsa(color="verde"))
+        deportes.agregarAFlota(new Kwid(tieneTanqueAdicional=true))
+        deportes.agregarAFlota(new AutoEspecial(capacidad=5,velocidad=160,peso=1200,color="beige"))
+        cultura.agregarAFlota(new Kwid(tieneTanqueAdicional=true))
+        cultura.agregarAFlota(new Kwid(tieneTanqueAdicional=true))
+        cultura.agregarAFlota(new Kwid(tieneTanqueAdicional=false))
+        cultura.agregarAFlota(trafic)
+        trafic.cambiarInterior(popular)
+        trafic.cambiarMotor(bataton)
+        deportes.agregarAFlota(cachito)
+        pedido1.agregarColorIncompatible("azul")
+        pedido1.agregarColorIncompatible("negro")
+        }
+  test "deportes tiene un peso total de 6450" {
+    assert.equals(1300*3+1350+1200,deportes.pesoTotalFlota())
+    
+  }
+  test "capacidad faltante de Deportes es de 25"{
+  assert.equals(25, deportes.capacidadFaltante())
+  }
+  test "Cachito puede satisfacer pedido de 960KHM de 8H para 4 pasajeros"{
+    assert.that(pedido1.puedeSatisfacerlo(cachito))
+  }
+  test "cachito puede No satisfacer pedido de 960KHM de 8H para 4 pasajeros"{
+    pedido1.agregarColorIncompatible("rojo")
+    assert.notThat(pedido1.puedeSatisfacerlo(cachito))
+  }
+}
